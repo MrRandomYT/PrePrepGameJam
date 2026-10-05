@@ -8,7 +8,6 @@ var acceleration := 1000.0
 @export_range(0, 10000, 0.01, "hide_slider")
 var deceleration := 800.0
 
-
 @export_subgroup("Jumping")
 @export_range(0, 1000, 0.01, "hide_slider")
 var jump_velocity := 200.0
@@ -19,7 +18,6 @@ var coyote_time := 0.1
 @export_range(0, 1, 0.01, "prefer_slider")
 var jump_cut_multiplier := 0.5
 @export var double_jump := true
-
 
 @export_subgroup("Dash")
 @export_range(0, 2000, 0.01, "hide_slider")
