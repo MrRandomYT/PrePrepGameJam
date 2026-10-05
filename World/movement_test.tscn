@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://ojlaj7bemdg3" path="res://Utility/StateMachine/state_machine.gd" id="5_nir2a"]
 [ext_resource type="Texture2D" uid="uid://iqyn1pb5uj1i" path="res://Entity/Player/Temporary.png" id="6_dkei7"]
 [ext_resource type="Script" uid="uid://b1dj1f0kdo7hd" path="res://Utility/StateMachine/idle_state.gd" id="6_f0d47"]
+[ext_resource type="Script" uid="uid://dbqmhdewofg7b" path="res://Utility/StateMachine/walk_state.gd" id="7_nir2a"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r243j"]
 texture = ExtResource("1_e7ggu")
@@ -593,6 +594,7 @@ collision_mask = 129
 script = ExtResource("3_tlfxx")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1282113108]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_45v3f")
 animation = &"idle"
 
@@ -610,3 +612,7 @@ metadata/_custom_type_script = "uid://ojlaj7bemdg3"
 [node name="IdleState" type="Node" parent="Player/StateMachine" unique_id=726671875]
 script = ExtResource("6_f0d47")
 metadata/_custom_type_script = "uid://b1dj1f0kdo7hd"
+
+[node name="WalkState" type="Node" parent="Player/StateMachine" unique_id=92470466]
+script = ExtResource("7_nir2a")
+metadata/_custom_type_script = "uid://dbqmhdewofg7b"
