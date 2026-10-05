@@ -46,7 +46,7 @@ func _physics_process(delta: float) -> void:
 	GroundCheck(delta)
 	Jump(delta)
 	Move(delta)
-
+	
 func Gravity(delta: float):
 	# Add the gravity.
 	if not is_on_floor():
