@@ -3,7 +3,7 @@ class_name IdleState
 
 func enter() -> void:
 	print("Entered idle")
-	animation_player.play("idle")
+	animated_sprite.play("idle")
 	
 
 func update(delta: float) -> void:

@@ -1,12 +1,22 @@
 extends Node
 class_name State
 
-var player: CharacterBody2D
-var animation_player: AnimationPlayer
+var state_id: StringName:
+	get:
+		return get_script().get_global_name()
 
-func setup(player: CharacterBody2D, animation_player: AnimationPlayer) -> void:
+var state_machine: StateMachine
+var player: CharacterBody2D
+var animated_sprite: AnimatedSprite2D
+
+func setup(
+	state_machine: StateMachine,
+	player: CharacterBody2D,
+	animated_sprite: AnimatedSprite2D
+) -> void:
+	self.state_machine = state_machine
 	self.player = player
-	self.animation_player = animation_player
+	self.animated_sprite = animated_sprite
 
 func enter() -> void:
 	pass
