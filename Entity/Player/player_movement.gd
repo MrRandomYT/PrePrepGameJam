@@ -18,6 +18,7 @@ var coyote_time := 0.1
 @export_range(0, 1, 0.01, "prefer_slider")
 var jump_cut_multiplier := 0.5
 @export var double_jump := true
+@export var wall_jump := true
 
 @export_subgroup("Dash")
 @export_range(0, 2000, 0.01, "hide_slider")
@@ -31,6 +32,7 @@ var dash_cooldown := 2.0
 var jump_buffer_timer := 0.0 # Early Jump
 var coyote_timer := 0.0 # Late Jump
 var can_double_jump : bool # Double Jump
+var can_wall_jump : bool # Double Jump
 
 var can_dash := true # Dash
 var dash_timer := 0.0
@@ -68,6 +70,7 @@ func GroundCheck(delta: float):
 	# Handle delayed jump
 	if (is_on_floor()):
 		if(can_double_jump != double_jump) : can_double_jump = double_jump
+		if(can_wall_jump != wall_jump) : can_wall_jump = wall_jump
 		can_dash = dash
 		coyote_timer = coyote_time
 	else:
@@ -84,7 +87,12 @@ func Jump (delta: float):
 			jump_buffer_timer = 0.0
 			coyote_timer = 0.0
 			velocity.y = -jump_velocity
+		elif is_on_wall() and can_wall_jump:
+			jump_buffer_timer = 0.0
+			can_wall_jump = false
+			velocity.y = -jump_velocity
 		elif can_double_jump:
+			jump_buffer_timer = 0.0
 			can_double_jump = false
 			velocity.y = -jump_velocity
 		else:
