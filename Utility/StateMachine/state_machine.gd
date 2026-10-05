@@ -22,7 +22,7 @@ func _ready() -> void:
 			child.setup(self, player, animated_sprite)
 			
 			if (states.has(child.state_id)):
-				push_error("Duplicate State ID: '%s'" % child.state_id)
+				push_error("Duplicate State ID: {child.state_id}")
 				continue
 				
 			states[child.state_id] = child
@@ -36,10 +36,11 @@ func _process(delta: float) -> void:
 func change_state(state_id: StringName) -> void:
 	if (!states.has(state_id)):
 		if(state_id != default_state):
-			change_state(default_state)	
-		else: 
-			push_error("State '%s' does not exist!" % state_id)
+			push_error("State '{state_id}' does not exist!")
 			return
+			
+		push_warning("State '{state_id}' does not exist, using default state '{default_state}.'")
+		state_id = default_state
 
 	if (current_state):
 		current_state.exit()
