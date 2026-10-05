@@ -22,10 +22,12 @@ func _ready() -> void:
 			child.setup(self, player, animated_sprite)
 			
 			if (states.has(child.state_id)):
-				push_error("Duplicate State ID: {child.state_id}")
+				push_error("Duplicate State ID: '%s'" % child.state_id)
 				continue
 				
 			states[child.state_id] = child
+			
+	change_state(default_state)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -35,11 +37,14 @@ func _process(delta: float) -> void:
 # Function called by states to request a change
 func change_state(state_id: StringName) -> void:
 	if (!states.has(state_id)):
-		if(state_id != default_state):
-			push_error("State '{state_id}' does not exist!")
+		if(state_id == default_state):
+			push_error("State '%s' does not exist!" % state_id)
 			return
 			
-		push_warning("State '{state_id}' does not exist, using default state '{default_state}.'")
+		push_warning("State '%s' does not exist, using default state '%s'." % [
+			state_id,
+			default_state
+		])
 		state_id = default_state
 
 	if (current_state):
