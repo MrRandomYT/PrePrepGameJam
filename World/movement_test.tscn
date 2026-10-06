@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://iqyn1pb5uj1i" path="res://Entity/Player/Temporary.png" id="6_dkei7"]
 [ext_resource type="Script" uid="uid://b1dj1f0kdo7hd" path="res://Utility/StateMachine/idle_state.gd" id="6_f0d47"]
 [ext_resource type="Script" uid="uid://dbqmhdewofg7b" path="res://Utility/StateMachine/walk_state.gd" id="7_nir2a"]
+[ext_resource type="Script" uid="uid://dupfst8nphxxi" path="res://Utility/StateMachine/jump_state.gd" id="8_f0d47"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r243j"]
 texture = ExtResource("1_e7ggu")
@@ -626,3 +627,7 @@ metadata/_custom_type_script = "uid://b1dj1f0kdo7hd"
 [node name="WalkState" type="Node" parent="Player/StateMachine" unique_id=92470466]
 script = ExtResource("7_nir2a")
 metadata/_custom_type_script = "uid://dbqmhdewofg7b"
+
+[node name="JumpState" type="Node" parent="Player/StateMachine" unique_id=291311004]
+script = ExtResource("8_f0d47")
+metadata/_custom_type_script = "uid://dupfst8nphxxi"

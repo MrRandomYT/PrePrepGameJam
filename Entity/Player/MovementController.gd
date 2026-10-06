@@ -10,10 +10,19 @@ func _ready() -> void:
 		set_process(false)
 		set_physics_process(false)
 
-func _physics_process(delta: float) -> void:
+func apply_gravity(delta: float) -> void:
 		if !player.is_on_floor():
 			player.velocity += player.get_gravity() * delta
-			player.move_and_slide()
+			
+func GroundCheck(delta: float):
+	# Handle delayed jump
+	if (player.is_on_floor()):
+		can_double_jump = double_jump
+		can_wall_jump = wall_jump
+		can_dash = dash
+		coyote_timer = coyote_time
+	else:
+		coyote_timer = maxf(coyote_timer - delta, 0.0)
 
 # Config Data
 

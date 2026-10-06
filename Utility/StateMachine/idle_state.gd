@@ -12,3 +12,6 @@ func update(delta: float) -> void:
 	if(player.is_on_floor()):
 		if(Input.get_axis("Left", "Right")):
 			state_machine.change_state("WalkState")
+	
+	if(Input.is_action_just_pressed("Jump")):
+		state_machine.change_state("JumpState")

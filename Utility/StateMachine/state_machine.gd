@@ -32,8 +32,13 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	movement_controller.apply_gravity(delta)
+	movement_controller.GroundCheck(delta)
+	
 	if current_state:
 		current_state.update(delta)
+		
+	player.move_and_slide()
 
 # Function called by states to request a change
 func change_state(state_id: StringName) -> void:

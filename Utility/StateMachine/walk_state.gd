@@ -18,6 +18,8 @@ func update(delta: float) -> void:
 			
 		var target_speed := direction * movement_controller.speed
 		player.velocity.x = move_toward(player.velocity.x, target_speed, movement_controller.acceleration * delta)
-		player.move_and_slide()
+		
+		if(Input.is_action_just_pressed("Jump")):
+			state_machine.change_state("JumpState")
 	else:
 		state_machine.change_state("IdleState")
