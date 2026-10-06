@@ -25,14 +25,16 @@ var jump_cut_multiplier := 0.5
 var dash_speed := 300.0
 @export_range(0, 1, 0.01, "prefer_slider")
 var dash_time := 0.15
-@export_range(0, 100, 0.01, "prefer_slider")
+@export_range(0, 60, 0.01, "prefer_slider")
 var dash_cooldown := 2.0
+@export_range(0, 1, 0.01, "prefer_slider")
+var dash_gravity_damping := 0.2
 @export var dash := true
 
 var jump_buffer_timer := 0.0 # Early Jump
 var coyote_timer := 0.0 # Late Jump
 var can_double_jump : bool # Double Jump
-var can_wall_jump : bool # Double Jump
+var can_wall_jump : bool # Wall Jump
 
 var can_dash := true # Dash
 var dash_timer := 0.0
@@ -42,10 +44,11 @@ var dash_direction: float:
 
 func _physics_process(delta: float) -> void:
 	Gravity(delta)
-	Dash(delta)
-	GroundCheck(delta)
 	Jump(delta)
 	Move(delta)
+	Dash(delta)
+	move_and_slide()
+	GroundCheck(delta)
 	
 func Gravity(delta: float):
 	# Add the gravity.
@@ -57,7 +60,6 @@ func Dash(delta: float):
 		can_dash = false
 		dash_timer = dash_time
 		dash_cooldown_timer = dash_cooldown
-		velocity.x = dash_direction * dash_speed
 		
 	if (dash_cooldown_timer > 0.0):
 		dash_cooldown_timer = maxf(dash_cooldown_timer - delta, 0.0)
@@ -65,12 +67,13 @@ func Dash(delta: float):
 	if (dash_timer > 0.0):
 		dash_timer = maxf(dash_timer - delta, 0.0)
 		velocity.x = dash_direction * dash_speed
+		velocity.y *= dash_gravity_damping
 
 func GroundCheck(delta: float):
 	# Handle delayed jump
 	if (is_on_floor()):
-		if(can_double_jump != double_jump) : can_double_jump = double_jump
-		if(can_wall_jump != wall_jump) : can_wall_jump = wall_jump
+		can_double_jump = double_jump
+		can_wall_jump = wall_jump
 		can_dash = dash
 		coyote_timer = coyote_time
 	else:
@@ -103,6 +106,9 @@ func Jump (delta: float):
 		velocity.y *= jump_cut_multiplier
 
 func Move (delta: float):
+	if dash_timer > 0.0:
+		return
+	
 	# Normal horizontal movement
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis("Left", "Right")
@@ -111,5 +117,3 @@ func Move (delta: float):
 		velocity.x = move_toward(velocity.x, target_speed, acceleration * delta)
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
-
-	move_and_slide()
