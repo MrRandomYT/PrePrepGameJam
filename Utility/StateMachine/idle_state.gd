@@ -2,9 +2,13 @@ extends State
 class_name IdleState
 
 func enter() -> void:
+	print("Entered IdleState")
 	animated_sprite.play("idle")
 	
 
-func update(_delta: float) -> void:
-	if(player.velocity.x != 0):
-		state_machine.change_state("WalkState")
+func update(delta: float) -> void:
+	player.velocity.x = move_toward(player.velocity.x, 0.0, movement_controller.deceleration * delta)
+	
+	if(player.is_on_floor()):
+		if(Input.get_axis("Left", "Right")):
+			state_machine.change_state("WalkState")
