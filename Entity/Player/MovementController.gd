@@ -37,6 +37,12 @@ func update_timers(delta: float) -> void:
 			0.0
 		)
 
+	if drop_through_timer > 0.0:
+		drop_through_timer = maxf(
+			drop_through_timer - delta,
+			0.0
+		)
+
 
 func update_ground_state(delta: float) -> void:
 	if player.is_on_floor():
@@ -134,6 +140,11 @@ var dash_gravity_damping := 0.2
 
 @export var dash := true
 
+@export_subgroup("Drop Through")
+
+@export var drop_through := true
+@export var drop_through_time := 0.2
+
 
 # ============================================================
 # Runtime Data
@@ -148,6 +159,8 @@ var can_wall_jump := false
 var can_dash := true
 var dash_timer := 0.0
 var dash_cooldown_timer := 0.0
+
+var drop_through_timer := 0.0
 
 # 1.0 = facing right
 # -1.0 = facing left

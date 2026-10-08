@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://dupfst8nphxxi" path="res://Utility/StateMachine/jump_state.gd" id="8_f0d47"]
 [ext_resource type="Script" uid="uid://bhsnis344xt26" path="res://Utility/StateMachine/fall_state.gd" id="9_7hby5"]
 [ext_resource type="Script" uid="uid://dgxyxs38vnwmf" path="res://Utility/StateMachine/dash_state.gd" id="10_jyd1x"]
+[ext_resource type="Script" uid="uid://ck6nopx6llrjn" path="res://Utility/StateMachine/drop_through_state.gd" id="11_mwal8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mwal8"]
 texture = ExtResource("1_jyd1x")
@@ -616,6 +617,8 @@ shape = SubResource("CapsuleShape2D_jctj4")
 script = ExtResource("5_f0d47")
 player = NodePath("..")
 allow_double_and_wall_jump = true
+dash_gravity_damping = 0.5
+drop_through_time = 0.075
 metadata/_custom_type_script = "uid://by70xaqult0bm"
 
 [node name="StateMachine" type="Node" parent="Player" unique_id=249194401 node_paths=PackedStringArray("player", "animated_sprite", "movement_controller")]
@@ -645,3 +648,7 @@ metadata/_custom_type_script = "uid://bhsnis344xt26"
 [node name="DashState" type="Node" parent="Player/StateMachine" unique_id=1650457789]
 script = ExtResource("10_jyd1x")
 metadata/_custom_type_script = "uid://dgxyxs38vnwmf"
+
+[node name="DropThroughState" type="Node" parent="Player/StateMachine" unique_id=2080831851]
+script = ExtResource("11_mwal8")
+metadata/_custom_type_script = "uid://ck6nopx6llrjn"

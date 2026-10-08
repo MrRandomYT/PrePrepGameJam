@@ -47,14 +47,23 @@ func update(delta: float) -> void:
 
 
 	# ========================================================
-	# Normal Jump
+	# Jump / Drop Through
 	# ========================================================
 
 	if Input.is_action_just_pressed("Jump"):
+
+		# Down + Jump = Drop Through
+		if Input.is_action_pressed("Down"):
+			if movement_controller.drop_through:
+				state_machine.change_state("DropThroughState")
+				return
+
+		# Normal Jump
 		state_machine.change_to_jump(
 			JumpState.JumpType.NORMAL
 		)
 		return
+
 
 
 	# ========================================================
