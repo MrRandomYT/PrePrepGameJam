@@ -7,19 +7,23 @@ func enter() -> void:
 
 
 func update(delta: float) -> void:
+
 	var direction := Input.get_axis("Left", "Right")
 
-	# -------------------------
-	# Horizontal air movement
-	# -------------------------
+
+	# ========================================================
+	# Horizontal Air Movement
+	# ========================================================
 
 	if direction != 0.0:
+
 		if direction > 0.0:
 			movement_controller.orientation = 1.0
 			animated_sprite.flip_h = false
 		else:
 			movement_controller.orientation = -1.0
 			animated_sprite.flip_h = true
+
 
 		var target_speed := direction * movement_controller.speed
 
@@ -28,72 +32,113 @@ func update(delta: float) -> void:
 			target_speed,
 			movement_controller.acceleration * delta
 		)
+
 	else:
+
 		player.velocity.x = move_toward(
 			player.velocity.x,
 			0.0,
 			movement_controller.deceleration * delta
 		)
 
-	# -------------------------
-	# Jump input
-	# -------------------------
+
+	# ========================================================
+	# Jump Input
+	# ========================================================
 
 	if Input.is_action_just_pressed("Jump"):
 
-		# Coyote jump.
+		# ----------------------------------------------------
+		# Coyote Jump
+		# ----------------------------------------------------
+
 		if movement_controller.coyote_timer > 0.0:
-			state_machine.change_state("JumpState")
+			state_machine.change_to_jump(
+				JumpState.JumpType.NORMAL
+			)
 			return
 
-		# Wall jump.
+
+		# ----------------------------------------------------
+		# Wall Jump
+		# ----------------------------------------------------
+
 		if player.is_on_wall() and movement_controller.can_wall_jump:
-			movement_controller.can_wall_jump = false
+
+			var wall_normal := player.get_wall_normal()
 
 			# Push away from wall.
-			var wall_normal := player.get_wall_normal()
-			player.velocity.x = wall_normal.x * movement_controller.speed
+			player.velocity.x = (
+				wall_normal.x * movement_controller.speed
+			)
 
-			state_machine.change_state("JumpState")
+			state_machine.change_to_jump(
+				JumpState.JumpType.WALL
+			)
 			return
 
-		# Double jump.
+
+		# ----------------------------------------------------
+		# Double Jump
+		# ----------------------------------------------------
+
 		if movement_controller.can_double_jump:
-			movement_controller.can_double_jump = false
-			state_machine.change_state("JumpState")
+
+			state_machine.change_to_jump(
+				JumpState.JumpType.DOUBLE
+			)
 			return
 
-		# Otherwise buffer the jump.
+
+		# ----------------------------------------------------
+		# No Jump Available → Buffer
+		# ----------------------------------------------------
+
 		movement_controller.jump_buffer_timer = (
 			movement_controller.jump_buffer_time
 		)
 
-	# -------------------------
-	# Jump buffer
-	# -------------------------
+
+	# ========================================================
+	# Jump Buffer
+	# ========================================================
 
 	if movement_controller.jump_buffer_timer > 0.0:
+
 		if player.is_on_floor():
-			state_machine.change_state("JumpState")
+			state_machine.change_to_jump(
+				JumpState.JumpType.NORMAL
+			)
 			return
 
-	# -------------------------
+
+	# ========================================================
 	# Dash
-	# -------------------------
+	# ========================================================
 
 	if Input.is_action_just_pressed("Dash"):
+
 		if movement_controller.can_dash:
 			state_machine.change_state("DashState")
 			return
 
-	# -------------------------
+
+	# ========================================================
 	# Landing
-	# -------------------------
+	# ========================================================
 
 	if player.is_on_floor():
+
 		if movement_controller.jump_buffer_timer > 0.0:
-			state_machine.change_state("JumpState")
+
+			state_machine.change_to_jump(
+				JumpState.JumpType.NORMAL
+			)
+
 		elif direction != 0.0:
+
 			state_machine.change_state("WalkState")
+
 		else:
+
 			state_machine.change_state("IdleState")

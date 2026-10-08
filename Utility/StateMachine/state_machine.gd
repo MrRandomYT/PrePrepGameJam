@@ -20,9 +20,14 @@ func _ready() -> void:
 		set_physics_process(false)
 		return
 
-	# Register all states that are children of the StateMachine.
+
+	# ========================================================
+	# Register States
+	# ========================================================
+
 	for child in get_children():
 		if child is State:
+
 			child.setup(
 				self,
 				player,
@@ -38,55 +43,56 @@ func _ready() -> void:
 
 			states[child.state_id] = child
 
-	# Start in the default state.
+
+	# ========================================================
+	# Start Default State
+	# ========================================================
+
 	change_state(default_state)
 
 
 func _physics_process(delta: float) -> void:
-	# --------------------------------------------------------
-	# Shared physics
-	# --------------------------------------------------------
+
+	# ========================================================
+	# Shared Physics
+	# ========================================================
 
 	movement_controller.apply_gravity(delta)
-
-	# Update timers such as jump buffer and dash cooldown.
 	movement_controller.update_timers(delta)
 
 
-	# --------------------------------------------------------
-	# Current state
-	# --------------------------------------------------------
+	# ========================================================
+	# Current State
+	# ========================================================
 
 	if current_state:
 		current_state.update(delta)
 
 
-	# --------------------------------------------------------
-	# Move the player
-	# --------------------------------------------------------
+	# ========================================================
+	# Move Player
+	# ========================================================
 
 	player.move_and_slide()
 
 
-	# --------------------------------------------------------
-	# Update persistent movement information
-	# --------------------------------------------------------
+	# ========================================================
+	# Update Ground State
+	# ========================================================
 
 	movement_controller.update_ground_state(delta)
 
 
 func change_state(state_id: StringName) -> void:
-	# Make sure the requested state exists.
-	if !states.has(state_id):
 
-		# The default state itself is missing.
+	if not states.has(state_id):
+
 		if state_id == default_state:
 			push_error(
 				"State '%s' does not exist!" % state_id
 			)
 			return
 
-		# Requested state doesn't exist.
 		push_warning(
 			"State '%s' does not exist, using default state '%s'." % [
 				state_id,
@@ -97,16 +103,26 @@ func change_state(state_id: StringName) -> void:
 		state_id = default_state
 
 
-	# Don't restart the same state unnecessarily.
+	# Don't restart the current state.
 	if current_state == states[state_id]:
 		return
 
 
-	# Exit the old state.
 	if current_state:
 		current_state.exit()
 
 
-	# Enter the new state.
 	current_state = states[state_id]
 	current_state.enter()
+
+
+# ============================================================
+# Jump Transition
+# ============================================================
+
+func change_to_jump(jump_type: JumpState.JumpType) -> void:
+	var jump_state := states["JumpState"] as JumpState
+
+	jump_state.jump_type = jump_type
+
+	change_state("JumpState")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://eygol2chivo7"
-path="res://.godot/imported/Temporary.png-35fc6da5c4f3bdcb82b5df6da6237fb5.ctex"
+uid="uid://coc5uwdkiym0m"
+path="res://.godot/imported/Pass-Through.png-732a9e1675699ddbf91dd7ee98155f2f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://World/Tiles/Platforms/Temporary.png"
-dest_files=["res://.godot/imported/Temporary.png-35fc6da5c4f3bdcb82b5df6da6237fb5.ctex"]
+source_file="res://World/Tiles/Platforms/Pass-Through.png"
+dest_files=["res://.godot/imported/Pass-Through.png-732a9e1675699ddbf91dd7ee98155f2f.ctex"]
 
 [params]
 

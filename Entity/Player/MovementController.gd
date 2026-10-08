@@ -115,6 +115,8 @@ var jump_cut_multiplier := 0.5
 
 @export var wall_jump := true
 
+@export var allow_double_and_wall_jump := false
+
 
 @export_subgroup("Dash")
 
