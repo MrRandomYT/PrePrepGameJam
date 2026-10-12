@@ -11,15 +11,15 @@ var animated_sprite: AnimatedSprite2D
 var movement_controller: MovementController
 
 func setup(
-	state_machine: StateMachine,
-	player: CharacterBody2D,
-	animated_sprite: AnimatedSprite2D,
-	movement_controller: MovementController
+	_state_machine: StateMachine,
+	_player: CharacterBody2D,
+	_animated_sprite: AnimatedSprite2D,
+	_movement_controller: MovementController
 ) -> void:
-	self.state_machine = state_machine
-	self.player = player
-	self.animated_sprite = animated_sprite
-	self.movement_controller = movement_controller
+	self.state_machine = _state_machine
+	self.player = _player
+	self.animated_sprite = _animated_sprite
+	self.movement_controller = _movement_controller
 
 func enter() -> void:
 	pass
@@ -27,5 +27,5 @@ func enter() -> void:
 func exit() -> void:
 	pass
 	
-func update(delta: float) -> void:
+func update(_delta: float) -> void:
 	pass

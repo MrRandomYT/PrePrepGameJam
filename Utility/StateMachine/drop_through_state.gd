@@ -1,32 +1,64 @@
+
 extends State
 class_name DropThroughState
+
+
+const PLATFORM_COLLISION_LAYER := 8
+
+var original_collision_mask := 0
+var drop_started := false
 
 
 func enter() -> void:
 	animated_sprite.play("idle")
 
-	# Start the drop-through timer.
-	movement_controller.drop_through_timer = (
-		movement_controller.drop_through_time
+	original_collision_mask = player.collision_mask
+	drop_started = false
+
+	# Ignore one-way platforms temporarily.
+	player.set_collision_mask_value(
+		PLATFORM_COLLISION_LAYER,
+		false
 	)
 
-	# Temporarily disable collision with layer 8.
-	player.set_collision_mask_value(8, false)
-
-	# Give the player a tiny downward push.
-	# This makes sure we actually leave the platform.
-	player.velocity.y = 50.0
+	# Ensure the player starts moving down.
+	player.velocity.y = maxf(player.velocity.y, 50.0)
 
 
-func update(delta: float) -> void:
+func update(_delta: float) -> void:
+	# Wait until the player has moved below the platform.
+	if not drop_started:
+		if player.velocity.y >= 0.0:
+			drop_started = true
+		return
 
-	# Keep falling until the drop-through timer expires.
-	if movement_controller.drop_through_timer > 0.0:
+	# Restore platform collision once we're clear of the
+	# platform we dropped through.
+	player.collision_mask = original_collision_mask
+
+	# If we landed on another platform, check whether it can
+	# also be dropped through.
+	if player.is_on_floor():
+		if Input.is_action_pressed("Jump"):
+			if movement_controller.can_drop_through_current_ground():
+				player.set_collision_mask_value(
+					PLATFORM_COLLISION_LAYER,
+					false
+				)
+				player.velocity.y = maxf(player.velocity.y, 50.0)
+				drop_started = false
+				return
+			else:
+				state_machine.change_state("JumpState")
+				return
+
+		if Input.get_axis("Left", "Right") != 0.0:
+			state_machine.change_state("WalkState")
+		else:
+			state_machine.change_state("IdleState")
 		return
 
 
-	# Restore collision with one-way platforms.
-	player.set_collision_mask_value(8, true)
-
-	# Continue normal falling.
-	state_machine.change_state("FallState")
+func exit() -> void:
+	# Never leave the player with platform collision disabled.
+	player.collision_mask = original_collision_mask

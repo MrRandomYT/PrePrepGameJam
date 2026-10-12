@@ -7,15 +7,14 @@ class_name StateMachine
 @export var movement_controller: MovementController
 @export var default_state: StringName
 
-
 var current_state: State
 var states: Dictionary[StringName, State] = {}
 
 
 func _ready() -> void:
 	if !player || !animated_sprite || !movement_controller:
-		push_error("Missing State Machine Requirements!")
-		push_warning("Disabling State Machine - Check Errors.")
+		push_error("StateMachine: Missing required references.")
+		push_warning("StateMachine: Disabling StateMachine. Check errors above.")
 		set_process(false)
 		set_physics_process(false)
 		return
@@ -52,35 +51,20 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-
-	# ========================================================
 	# Shared Physics
-	# ========================================================
-
 	movement_controller.apply_gravity(delta)
 	movement_controller.update_timers(delta)
 
-
-	# ========================================================
 	# Current State
-	# ========================================================
-
 	if current_state:
 		current_state.update(delta)
 
-
-	# ========================================================
 	# Move Player
-	# ========================================================
-
 	player.move_and_slide()
 
-
-	# ========================================================
 	# Update Ground State
-	# ========================================================
-
 	movement_controller.update_ground_state(delta)
+	movement_controller.update_ground_data()
 
 
 func change_state(state_id: StringName) -> void:
