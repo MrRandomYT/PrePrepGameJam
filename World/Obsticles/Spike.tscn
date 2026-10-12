@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://2fgtaf4cy637"]
+
+[ext_resource type="Script" uid="uid://cy3hi0l0lw1yo" path="res://World/Obsticles/Spike.gd" id="1_fvkom"]
+[ext_resource type="Texture2D" uid="uid://iud5lfp5pv3n" path="res://icon.svg" id="2_oh7ev"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jctj4"]
+
+[node name="Spike" type="Area2D" unique_id=1078959125]
+script = ExtResource("1_fvkom")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=79761499]
+modulate = Color(1, 0, 0, 1)
+self_modulate = Color(1, 0, 0, 1)
+position = Vector2(-1.9073486e-06, 8.940697e-08)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_oh7ev")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=587956340]
+shape = SubResource("RectangleShape2D_jctj4")
+
+[node name="DamageCooldown" type="Timer" parent="." unique_id=937016394]

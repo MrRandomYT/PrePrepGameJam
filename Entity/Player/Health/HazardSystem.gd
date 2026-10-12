@@ -13,7 +13,7 @@ class_name HazardSystem
 		_update_toxin_curve()
 
 @export_subgroup("Toxins")
-@export var max_toxins := 100: # Soft Max
+@export var max_toxins := 4: # Soft Max
 	set(value):
 		max_toxins = value
 		_update_toxin_curve()
@@ -39,7 +39,6 @@ class_name HazardSystem
 signal health_changed(current_health: int, max_health: int)
 signal toxin_coins_changed(toxin_coins: int)
 signal toxin_level_changed(toxin_level: int)
-signal health_regeneration_changed(can_regenerate: bool)
 
 # ============================================================
 # Runtime Data
@@ -53,7 +52,7 @@ var toxin_coins := 0
 func toxin_level() -> int:
 	if toxinImmunity or toxin_tween == null:
 		return 0
-
+	
 	return roundi(toxin_tween.sample(clampf(
 		toxin_coins,
 		min_toxins,
@@ -122,6 +121,7 @@ func purify_toxin_coins() -> int:
 		toxin_level_changed.emit(toxin_level())
 
 	return purified_amount
+	
 func collect_toxin_coins(amount: int) -> void:
 	if amount <= 0:
 		return
@@ -137,18 +137,11 @@ func collect_toxin_coins(amount: int) -> void:
 	if toxin_coins != previous_coins:
 		toxin_coins_changed.emit(toxin_coins)
 		toxin_level_changed.emit(toxin_level())
-	if amount <= 0:
-		return
-
-	toxin_coins = clampi(
-		toxin_coins + amount,
-		min_toxins,
-		max_toxins
-	)
 
 # Regeneration
 func max_regen() -> int:
 	return maxi(max_health - toxin_level(), 0)
+	
 func update_health_regeneration(delta: float) -> void:
 	# Stop if regeneration is disabled.
 	if not can_regenerate_health or health_regen_rate <= 0.0:
