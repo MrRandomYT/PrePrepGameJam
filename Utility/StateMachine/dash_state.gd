@@ -7,6 +7,7 @@ func enter() -> void:
 
 	movement_controller.can_dash = false
 	movement_controller.dash_timer = movement_controller.dash_time
+	movement_controller.dash_cooldown_timer = movement_controller.dash_cooldown_time
 
 	# Dash in facing direction.
 	player.velocity.x = (

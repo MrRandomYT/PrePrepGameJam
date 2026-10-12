@@ -72,21 +72,6 @@ func request_jump() -> void:
 func consume_jump_buffer() -> void:
 	jump_buffer_timer = 0.0
 
-
-# ============================================================
-# Dash
-# ============================================================
-
-func start_dash() -> void:
-	can_dash = false
-	dash_timer = dash_time
-	dash_cooldown_timer = dash_cooldown
-
-
-func end_dash() -> void:
-	dash_timer = 0.0
-
-
 # ============================================================
 # Config Data
 # ============================================================
@@ -121,22 +106,26 @@ var jump_cut_multiplier := 0.5
 
 @export var wall_jump := true
 
-@export var allow_double_and_wall_jump := false
+@export var allow_double_and_wall_jump := true
+
+@export var infinite_wall_jump := false
+
+@export var infinite_double_jump := false
 
 
 @export_subgroup("Dash")
 
 @export_range(0, 2000, 0.01, "hide_slider")
-var dash_speed := 300.0
+var dash_speed := 250.0
 
 @export_range(0, 1, 0.01, "prefer_slider")
 var dash_time := 0.15
 
 @export_range(0, 60, 0.01, "prefer_slider")
-var dash_cooldown := 2.0
+var dash_cooldown_time := 2.0
 
 @export_range(0, 1, 0.01, "prefer_slider")
-var dash_gravity_damping := 0.2
+var dash_gravity_damping := 0.33
 
 @export var dash := true
 

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cul441j8fchfp"]
+
+[ext_resource type="Script" uid="uid://ci7vp6p08f2ua" path="res://Utility/TouchInput/virtual_joystick_controller.gd" id="1_s48yf"]
+
+[node name="VirtualJoystick" type="Control" unique_id=125120646]
+z_index = 99
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s48yf")
+
+[node name="JoystickBase" type="ColorRect" parent="." unique_id=204123271]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 150.0
+color = Color(0.6, 0.6, 0.6, 0.39215687)
+
+[node name="JoystickKnob" type="ColorRect" parent="." unique_id=91475242]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 45.0
+offset_right = 105.0
+offset_bottom = 105.0

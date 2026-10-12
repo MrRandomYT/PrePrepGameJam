@@ -118,7 +118,7 @@ func update(delta: float) -> void:
 
 	if Input.is_action_just_pressed("Dash"):
 
-		if movement_controller.can_dash:
+		if movement_controller.can_dash and movement_controller.dash_cooldown_timer <= 0:
 			state_machine.change_state("DashState")
 			return
 

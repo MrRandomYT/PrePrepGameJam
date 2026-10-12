@@ -36,7 +36,7 @@ func enter() -> void:
 
 		JumpType.DOUBLE:
 			# Consume double jump.
-			movement_controller.can_double_jump = false
+			movement_controller.can_double_jump = movement_controller.infinite_double_jump
 
 			# If double + wall jumps are NOT independent,
 			# consume the wall jump too.
@@ -46,7 +46,7 @@ func enter() -> void:
 
 		JumpType.WALL:
 			# Consume wall jump.
-			movement_controller.can_wall_jump = false
+			movement_controller.can_wall_jump = movement_controller.infinite_wall_jump
 
 			# If double + wall jumps are NOT independent,
 			# consume the double jump too.
@@ -108,7 +108,7 @@ func update(delta: float) -> void:
 	# ========================================================
 
 	if Input.is_action_just_pressed("Dash"):
-		if movement_controller.can_dash:
+		if movement_controller.can_dash and movement_controller.dash_cooldown_timer <= 0:
 			state_machine.change_state("DashState")
 			return
 
