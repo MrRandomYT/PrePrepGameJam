@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bebi88esmyw7w"
-path="res://.godot/imported/ToxicHeart-QuickSample-Sheet.png-9e9b151990c8f0fd9054cedbb28703ee.ctex"
+uid="uid://d3cnrqfhwjce2"
+path="res://.godot/imported/Hearts-Sheet2.png-ea96fdf18ff7534a7b98c361ec41e167.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Entity/Player/Sprites/ToxicHeart-QuickSample-Sheet.png"
-dest_files=["res://.godot/imported/ToxicHeart-QuickSample-Sheet.png-9e9b151990c8f0fd9054cedbb28703ee.ctex"]
+source_file="res://Entity/Player/Sprites/Hearts-Sheet2.png"
+dest_files=["res://.godot/imported/Hearts-Sheet2.png-ea96fdf18ff7534a7b98c361ec41e167.ctex"]
 
 [params]
 

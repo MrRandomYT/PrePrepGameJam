@@ -665,15 +665,16 @@ script = ExtResource("3_rcqjt")
 hazard_system = NodePath("../../Player/Systems/HazardSystem")
 hearts_container = NodePath("../HeartsContainer")
 heart_scene = ExtResource("3_6lxwl")
+is_touch = true
 touch_controlls = ExtResource("12_0hew8")
 metadata/_custom_type_script = "uid://eibasgsqmugy"
 
 [node name="HeartsContainer" type="HBoxContainer" parent="UserInterface" unique_id=1880832805]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 132.0
-offset_bottom = 52.0
-theme_override_constants/separation = 24
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 204.0
+offset_bottom = 60.0
+theme_override_constants/separation = 36
 
 [node name="Heart" parent="UserInterface/HeartsContainer" unique_id=582665107 instance=ExtResource("3_6lxwl")]
 layout_mode = 2
@@ -698,7 +699,7 @@ zoom = Vector2(2.25, 2.25)
 script = ExtResource("1_mf1aw")
 follow_target = NodePath("../Player")
 minimum = Vector2(142, -120)
-maximum = Vector2(322, 75)
+maximum = Vector2(322, 30)
 metadata/_custom_type_script = "uid://bvq7dwoexwbhj"
 
 [node name="World" type="Node" parent="." unique_id=1474764536]
@@ -741,7 +742,8 @@ collision_mask = 129
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1282113108]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_45v3f")
-animation = &"idle"
+animation = &"walk"
+frame_progress = 0.330554
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=94021942]
 position = Vector2(0, 2)

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ddow3vqxtnpuw"]
 
 [ext_resource type="Script" uid="uid://cw43snkmm44yi" path="res://Entity/Player/Health/Heart.gd" id="1_qng6g"]
-[ext_resource type="Texture2D" uid="uid://bebi88esmyw7w" path="res://Entity/Player/Sprites/ToxicHeart-QuickSample-Sheet.png" id="2_nh7me"]
+[ext_resource type="Texture2D" uid="uid://d3cnrqfhwjce2" path="res://Entity/Player/Sprites/Hearts-Sheet2.png" id="2_nh7me"]
 
 [node name="Heart" type="Control" unique_id=582665107]
 layout_mode = 3
@@ -12,6 +12,6 @@ metadata/_custom_type_script = "uid://cw43snkmm44yi"
 [node name="HeartSprite" type="Sprite2D" parent="." unique_id=449330214]
 texture_filter = 1
 texture_repeat = 1
+scale = Vector2(2, 2)
 texture = ExtResource("2_nh7me")
 hframes = 9
-frame = 2
