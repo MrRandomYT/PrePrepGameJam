@@ -76,10 +76,6 @@ func _ready() -> void:
 		player_controller.hazard_system.max_health
 	)
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Pause"):
-		PauseManager.toggle_pause()
-
 func create_hearts() -> void:
 	# Remove existing hearts.
 	for child in hearts_container.get_children():
@@ -135,6 +131,9 @@ func _on_toxin_level_changed(_toxin_level: int) -> void:
 	)
 
 func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Pause"):
+		PauseManager.toggle_pause()
+	
 	if pause_menu:
 		if PauseManager.is_paused: 
 			pause_menu.show()

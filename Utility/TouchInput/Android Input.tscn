@@ -54,3 +54,19 @@ text = "DASH"
 script = ExtResource("2_x4mva")
 action = &"Dash"
 metadata/_custom_type_script = "uid://bmcyqbacpyqpb"
+
+[node name="PauseButton" type="Button" parent="." unique_id=1719208190]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_top = 24.0
+offset_right = -25.0
+offset_bottom = 76.0
+grow_horizontal = 0
+focus_mode = 0
+text = "Pause"
+script = ExtResource("2_x4mva")
+action = &"Pause"
+metadata/_custom_type_script = "uid://bmcyqbacpyqpb"
