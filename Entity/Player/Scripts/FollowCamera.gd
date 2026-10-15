@@ -8,12 +8,14 @@ class_name FollowCamera
 var follow_target: Node2D
 
 func _ready() -> void:
-	# Find the Player if no follow target has been assigned.
-	if follow_target == null:
+	# Wait for the Player to become available.
+	while follow_target == null:
 		follow_target = get_tree().get_first_node_in_group("player") as Node2D
 
-	if follow_target == null:
-		push_warning("FollowCamera: Could not find Player.")
+		if follow_target != null:
+			break
+
+		await get_tree().process_frame
 
 
 func _process(_delta: float) -> void:

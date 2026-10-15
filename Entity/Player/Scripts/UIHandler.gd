@@ -8,8 +8,10 @@ class_name UIHandler
 var player_controller: PlayerController
 var hearts: Array[Heart] = []
 
+@export_subgroup("Menus")
+@export var pause_menu: Node
+
 @export_subgroup("Android & Touch")
-@export var is_touch: bool = false
 @export var touch_controlls: PackedScene
 
 
@@ -17,7 +19,7 @@ func _ready() -> void:
 	# ============================================================
 	# Android & Touch
 	# ============================================================
-	if is_touch:
+	if GameSettings.is_touch:
 		if touch_controlls == null:
 			push_warning("UIHandler: Assign TouchControlls.")
 		else:
@@ -29,13 +31,23 @@ func _ready() -> void:
 	# ============================================================
 
 	# Find the PlayerController if it hasn't been assigned.
-	if player_controller == null:
+	while player_controller == null:
 		var player_node: Node = get_tree().get_first_node_in_group("player")
-		player_controller = player_node as PlayerController
 
-	if player_controller == null:
-		push_warning("UIHandler: Could not find PlayerController.")
-		return
+		if player_node != null:
+			# Check whether the Player root is the controller.
+			player_controller = player_node as PlayerController
+
+			# Otherwise, look for PlayerController among its children.
+			if player_controller == null:
+				player_controller = player_node.find_child(
+					"PlayerController",
+					true,
+					false
+				) as PlayerController
+
+		if player_controller == null:
+			await get_tree().process_frame
 
 	if player_controller.hazard_system == null:
 		push_warning("UIHandler: PlayerController has no HazardSystem.")
@@ -49,16 +61,24 @@ func _ready() -> void:
 		push_warning("UIHandler: Assign Heart Scene.")
 		return
 
-	player_controller.hazard_system.health_changed.connect(_on_health_changed)
-	player_controller.hazard_system.toxin_level_changed.connect(_on_toxin_level_changed)
+	# Connect to HazardSystem™ signals.
+	if not player_controller.hazard_system.health_changed.is_connected(_on_health_changed):
+		player_controller.hazard_system.health_changed.connect(_on_health_changed)
+
+	if not player_controller.hazard_system.toxin_level_changed.is_connected(_on_toxin_level_changed):
+		player_controller.hazard_system.toxin_level_changed.connect(_on_toxin_level_changed)
 
 	create_hearts()
+
 	call_deferred(
 		"update_hearts",
 		player_controller.hazard_system.current_health,
 		player_controller.hazard_system.max_health
 	)
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Pause"):
+		PauseManager.toggle_pause()
 
 func create_hearts() -> void:
 	# Remove existing hearts.
@@ -81,7 +101,6 @@ func create_hearts() -> void:
 
 		hearts_container.add_child(heart)
 		hearts.append(heart)
-
 
 func update_hearts(current: int, _maximum: int) -> void:
 	var toxins: int = player_controller.hazard_system.toxin_level()
@@ -106,13 +125,19 @@ func update_hearts(current: int, _maximum: int) -> void:
 			toxins_for_heart
 		)
 
-
 func _on_health_changed(current: int, maximum: int) -> void:
 	update_hearts(current, maximum)
-
 
 func _on_toxin_level_changed(_toxin_level: int) -> void:
 	update_hearts(
 		player_controller.hazard_system.current_health,
 		player_controller.hazard_system.max_health
 	)
+
+func _process(_delta: float) -> void:
+	if pause_menu:
+		if PauseManager.is_paused: 
+			pause_menu.show()
+		else: 
+			pause_menu.hide()
+	

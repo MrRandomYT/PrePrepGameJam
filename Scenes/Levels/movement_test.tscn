@@ -1,18 +1,18 @@
 [gd_scene format=4 uid="uid://duwhlaq8kd5rv"]
 
-[ext_resource type="Texture2D" uid="uid://coc5uwdkiym0m" path="res://World/Tiles/Platforms/Pass-Through.png" id="1_jyd1x"]
-[ext_resource type="Script" uid="uid://bvq7dwoexwbhj" path="res://Entity/Player/Scripts/FollowCamera.gd" id="1_mf1aw"]
-[ext_resource type="PackedScene" uid="uid://bpv5cid0e74b4" path="res://Entity/Player/player.tscn" id="1_mwal8"]
-[ext_resource type="Texture2D" uid="uid://db304id1pi0j8" path="res://World/Tiles/All-Tiles.png" id="2_dkei7"]
-[ext_resource type="PackedScene" uid="uid://ddow3vqxtnpuw" path="res://Entity/Player/Health/Heart.tscn" id="3_6lxwl"]
-[ext_resource type="Script" uid="uid://eibasgsqmugy" path="res://Entity/Player/Scripts/UIHandler.gd" id="3_rcqjt"]
-[ext_resource type="PackedScene" uid="uid://2fgtaf4cy637" path="res://World/Obsticles/Spike.tscn" id="4_a1nfn"]
-[ext_resource type="PackedScene" uid="uid://btwkqitlhhcua" path="res://World/Areas/CleansingStation.tscn" id="7_oy5ch"]
-[ext_resource type="PackedScene" uid="uid://gprquixao3wv" path="res://Entity/Coins/ToxinCoin.tscn" id="8_a1nfn"]
-[ext_resource type="PackedScene" uid="uid://hg3d7jso1ae" path="res://Utility/TouchInput/Android Input.tscn" id="12_0hew8"]
+[ext_resource type="Script" uid="uid://bvq7dwoexwbhj" path="res://Entity/Player/Scripts/FollowCamera.gd" id="2_t3o42"]
+[ext_resource type="Script" uid="uid://eibasgsqmugy" path="res://Entity/Player/Scripts/UIHandler.gd" id="3_di465"]
+[ext_resource type="PackedScene" uid="uid://ddow3vqxtnpuw" path="res://Entity/Player/Health/Heart.tscn" id="4_2axfo"]
+[ext_resource type="PackedScene" uid="uid://hg3d7jso1ae" path="res://Utility/TouchInput/Android Input.tscn" id="5_bhrwa"]
+[ext_resource type="Script" uid="uid://dqv2rc4q34x7e" path="res://Utility/SceneManaging/LevelLoadButton.gd" id="5_po7ir"]
+[ext_resource type="Texture2D" uid="uid://coc5uwdkiym0m" path="res://World/Tiles/Platforms/Pass-Through.png" id="6_qy4dc"]
+[ext_resource type="Texture2D" uid="uid://db304id1pi0j8" path="res://World/Tiles/All-Tiles.png" id="7_ynqi7"]
+[ext_resource type="PackedScene" uid="uid://btwkqitlhhcua" path="res://World/Areas/CleansingStation.tscn" id="8_pje55"]
+[ext_resource type="PackedScene" uid="uid://gprquixao3wv" path="res://Entity/Coins/ToxinCoin.tscn" id="9_748rt"]
+[ext_resource type="PackedScene" uid="uid://2fgtaf4cy637" path="res://World/Obsticles/Spike.tscn" id="10_kewuw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mwal8"]
-texture = ExtResource("1_jyd1x")
+texture = ExtResource("6_qy4dc")
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 1
@@ -40,7 +40,7 @@ texture = ExtResource("1_jyd1x")
 2:0/0/custom_data_1 = "stone"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7hby5"]
-texture = ExtResource("2_dkei7")
+texture = ExtResource("7_ynqi7")
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
@@ -483,28 +483,26 @@ sources/1 = SubResource("TileSetAtlasSource_mwal8")
 
 [node name="MovementTest" type="Node2D" unique_id=685873969]
 
-[node name="Player" parent="." unique_id=1126686529 instance=ExtResource("1_mwal8")]
-position = Vector2(34, -24)
-
 [node name="FollowCamera" type="Camera2D" parent="." unique_id=1020977703]
 zoom = Vector2(2.25, 2.25)
-script = ExtResource("1_mf1aw")
+script = ExtResource("2_t3o42")
 minimum = Vector2(142, -120)
 maximum = Vector2(322, 30)
 metadata/_custom_type_script = "uid://bvq7dwoexwbhj"
 
 [node name="UserInterface" type="CanvasLayer" parent="." unique_id=907850296]
+process_mode = 3
 
-[node name="UIHandler" type="Control" parent="UserInterface" unique_id=636175854 node_paths=PackedStringArray("hearts_container")]
+[node name="UIHandler" type="Control" parent="UserInterface" unique_id=636175854 node_paths=PackedStringArray("hearts_container", "pause_menu")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("3_rcqjt")
+script = ExtResource("3_di465")
 hearts_container = NodePath("../HeartsContainer")
-heart_scene = ExtResource("3_6lxwl")
-is_touch = true
-touch_controlls = ExtResource("12_0hew8")
+heart_scene = ExtResource("4_2axfo")
+pause_menu = NodePath("../Panel")
+touch_controlls = ExtResource("5_bhrwa")
 metadata/_custom_type_script = "uid://eibasgsqmugy"
 
 [node name="HeartsContainer" type="HBoxContainer" parent="UserInterface" unique_id=1880832805]
@@ -514,23 +512,48 @@ offset_right = 204.0
 offset_bottom = 60.0
 theme_override_constants/separation = 36
 
-[node name="Heart" parent="UserInterface/HeartsContainer" unique_id=582665107 instance=ExtResource("3_6lxwl")]
+[node name="Heart" parent="UserInterface/HeartsContainer" unique_id=582665107 instance=ExtResource("4_2axfo")]
 layout_mode = 2
 
-[node name="Heart2" parent="UserInterface/HeartsContainer" unique_id=1683253043 instance=ExtResource("3_6lxwl")]
+[node name="Heart2" parent="UserInterface/HeartsContainer" unique_id=1683253043 instance=ExtResource("4_2axfo")]
 layout_mode = 2
 
-[node name="Heart3" parent="UserInterface/HeartsContainer" unique_id=1479778450 instance=ExtResource("3_6lxwl")]
+[node name="Heart3" parent="UserInterface/HeartsContainer" unique_id=1479778450 instance=ExtResource("4_2axfo")]
 layout_mode = 2
 
-[node name="Heart4" parent="UserInterface/HeartsContainer" unique_id=2007766919 instance=ExtResource("3_6lxwl")]
+[node name="Heart4" parent="UserInterface/HeartsContainer" unique_id=2007766919 instance=ExtResource("4_2axfo")]
 layout_mode = 2
 
-[node name="Heart5" parent="UserInterface/HeartsContainer" unique_id=449206607 instance=ExtResource("3_6lxwl")]
+[node name="Heart5" parent="UserInterface/HeartsContainer" unique_id=449206607 instance=ExtResource("4_2axfo")]
 layout_mode = 2
 
-[node name="Heart6" parent="UserInterface/HeartsContainer" unique_id=854948055 instance=ExtResource("3_6lxwl")]
+[node name="Heart6" parent="UserInterface/HeartsContainer" unique_id=854948055 instance=ExtResource("4_2axfo")]
 layout_mode = 2
+
+[node name="Panel" type="Panel" parent="UserInterface" unique_id=1992354568]
+process_mode = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LevelLoadButton" type="Button" parent="UserInterface/Panel" unique_id=1328162827]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 15.0
+offset_right = 123.0
+offset_bottom = 46.0
+text = "Main Menu"
+script = ExtResource("5_po7ir")
+level_path = "uid://diiavyrojksku"
+metadata/_custom_type_script = "uid://dqv2rc4q34x7e"
 
 [node name="World" type="Node" parent="." unique_id=1474764536]
 
@@ -541,19 +564,27 @@ tile_set = SubResource("TileSet_jctj4")
 
 [node name="Interactables" type="Node" parent="World" unique_id=1002924982]
 
-[node name="CleansingStation" parent="World/Interactables" unique_id=102951729 instance=ExtResource("7_oy5ch")]
+[node name="CleansingStation" parent="World/Interactables" unique_id=102951729 instance=ExtResource("8_pje55")]
 position = Vector2(324, -158)
 
-[node name="ToxinCoin3" parent="World/Interactables" unique_id=1988904948 instance=ExtResource("8_a1nfn")]
+[node name="ToxinCoin3" parent="World/Interactables" unique_id=1988904948 instance=ExtResource("9_748rt")]
 position = Vector2(139, -145)
 
-[node name="ToxinCoin2" parent="World/Interactables" unique_id=163435930 instance=ExtResource("8_a1nfn")]
+[node name="ToxinCoin2" parent="World/Interactables" unique_id=163435930 instance=ExtResource("9_748rt")]
 position = Vector2(171, -145)
 
-[node name="ToxinCoin" parent="World/Interactables" unique_id=1400783287 instance=ExtResource("8_a1nfn")]
+[node name="ToxinCoin" parent="World/Interactables" unique_id=1400783287 instance=ExtResource("9_748rt")]
 position = Vector2(210, -145)
 
 [node name="Obsticles" type="Node" parent="World" unique_id=394457480]
 
-[node name="Spike" parent="World/Obsticles" unique_id=1078959125 instance=ExtResource("4_a1nfn")]
+[node name="Spike" parent="World/Obsticles" unique_id=1078959125 instance=ExtResource("10_kewuw")]
 position = Vector2(29, -140)
+
+[node name="SpawnPoints" type="Node" parent="World" unique_id=1427863824]
+
+[node name="Default" type="Marker2D" parent="World/SpawnPoints" unique_id=1649053443]
+position = Vector2(45, -24)
+
+[node name="Respawn" type="Marker2D" parent="World/SpawnPoints" unique_id=726978955]
+position = Vector2(409, -156)

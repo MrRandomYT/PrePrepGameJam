@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://diiavyrojksku"]
+
+[ext_resource type="Script" uid="uid://dgi5blj3j316h" path="res://Scenes/MainMenu/main_menu.gd" id="1_cdkru"]
+[ext_resource type="Script" uid="uid://dqv2rc4q34x7e" path="res://Utility/SceneManaging/LevelLoadButton.gd" id="2_c7oo3"]
+[ext_resource type="PackedScene" uid="uid://bpv5cid0e74b4" path="res://Entity/Player/player.tscn" id="3_sg7ab"]
+[ext_resource type="Script" uid="uid://dmdlhclvnhp5m" path="res://Scenes/MainMenu/SettingsToggleButton.gd" id="4_kpx3y"]
+
+[node name="MainMenu" type="Control" unique_id=123969409]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cdkru")
+
+[node name="LevelLoadButton" type="Button" parent="." unique_id=1330375669]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 19.0
+offset_right = 31.0
+offset_bottom = 27.0
+text = "Test Level"
+script = ExtResource("2_c7oo3")
+level_path = "uid://duwhlaq8kd5rv"
+player_scene = ExtResource("3_sg7ab")
+spawn_point = &"Respawn"
+metadata/_custom_type_script = "uid://dqv2rc4q34x7e"
+
+[node name="SettingsToggleButton" type="Button" parent="." unique_id=1622461917]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 55.0
+offset_right = 148.0
+offset_bottom = 86.0
+toggle_mode = true
+text = "Touch Controls"
+script = ExtResource("4_kpx3y")
+metadata/_custom_type_script = "uid://dmdlhclvnhp5m"
