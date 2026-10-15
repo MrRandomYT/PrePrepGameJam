@@ -5,33 +5,33 @@ class_name DashState
 func enter() -> void:
 	animated_sprite.play("idle")
 
-	movement_controller.can_dash = false
-	movement_controller.dash_timer = movement_controller.dash_time
-	movement_controller.dash_cooldown_timer = movement_controller.dash_cooldown_time
+	player_controller.can_dash = false
+	player_controller.dash_timer = player_controller.dash_time
+	player_controller.dash_cooldown_timer = player_controller.dash_cooldown_time
 
 	# Dash in facing direction.
 	player.velocity.x = (
-		movement_controller.orientation
-		* movement_controller.dash_speed
+		player_controller.orientation
+		* player_controller.dash_speed
 	)
 
 	# Preserve the original gravity damping behavior.
-	player.velocity.y *= movement_controller.dash_gravity_damping
+	player.velocity.y *= player_controller.dash_gravity_damping
 
 
 func update(delta: float) -> void:
 	# Keep dash movement locked.
 	player.velocity.x = (
-		movement_controller.orientation
-		* movement_controller.dash_speed
+		player_controller.orientation
+		* player_controller.dash_speed
 	)
 
-	player.velocity.y *= movement_controller.dash_gravity_damping
+	player.velocity.y *= player_controller.dash_gravity_damping
 
-	movement_controller.dash_timer -= delta
+	player_controller.dash_timer -= delta
 
-	if movement_controller.dash_timer <= 0.0:
-		movement_controller.dash_timer = 0.0
+	if player_controller.dash_timer <= 0.0:
+		player_controller.dash_timer = 0.0
 
 		# Decide where we go after the dash.
 		if player.is_on_floor():

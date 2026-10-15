@@ -15,7 +15,7 @@ func update(delta: float) -> void:
 	player.velocity.x = move_toward(
 		player.velocity.x,
 		0.0,
-		movement_controller.deceleration * delta
+		player_controller.deceleration * delta
 	)
 
 
@@ -35,7 +35,7 @@ func update(delta: float) -> void:
 
 		# Down + Jump = Drop Through
 		if Input.is_action_pressed("Down"):
-			if movement_controller.drop_through:
+			if player_controller.drop_through:
 				state_machine.change_state("DropThroughState")
 				return
 
@@ -51,7 +51,7 @@ func update(delta: float) -> void:
 	# ========================================================
 
 	if Input.is_action_just_pressed("Dash"):
-		if movement_controller.can_dash and movement_controller.dash_cooldown_timer <= 0:
+		if player_controller.can_dash and player_controller.dash_cooldown_timer <= 0:
 			state_machine.change_state("DashState")
 			return
 

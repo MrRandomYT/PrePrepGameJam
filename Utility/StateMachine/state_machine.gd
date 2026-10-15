@@ -4,7 +4,7 @@ class_name StateMachine
 
 @export var player: CharacterBody2D
 @export var animated_sprite: AnimatedSprite2D
-@export var movement_controller: MovementController
+@export var player_controller: PlayerController
 @export var default_state: StringName
 
 var current_state: State
@@ -12,7 +12,7 @@ var states: Dictionary[StringName, State] = {}
 
 
 func _ready() -> void:
-	if !player || !animated_sprite || !movement_controller:
+	if !player || !animated_sprite || !player_controller:
 		push_error("StateMachine: Missing required references.")
 		push_warning("StateMachine: Disabling StateMachine. Check errors above.")
 		set_process(false)
@@ -31,7 +31,7 @@ func _ready() -> void:
 				self,
 				player,
 				animated_sprite,
-				movement_controller
+				player_controller
 			)
 
 			if states.has(child.state_id):
@@ -52,8 +52,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	# Shared Physics
-	movement_controller.apply_gravity(delta)
-	movement_controller.update_timers(delta)
+	player_controller.apply_gravity(delta)
+	player_controller.update_timers(delta)
 
 	# Current State
 	if current_state:
@@ -63,8 +63,8 @@ func _physics_process(delta: float) -> void:
 	player.move_and_slide()
 
 	# Update Ground State
-	movement_controller.update_ground_state(delta)
-	movement_controller.update_ground_data()
+	player_controller.update_ground_state(delta)
+	player_controller.update_ground_data()
 
 
 func change_state(state_id: StringName) -> void:

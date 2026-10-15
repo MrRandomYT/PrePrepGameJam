@@ -18,19 +18,19 @@ func update(delta: float) -> void:
 	if direction != 0.0:
 
 		if direction > 0.0:
-			movement_controller.orientation = 1.0
+			player_controller.orientation = 1.0
 			animated_sprite.flip_h = false
 		else:
-			movement_controller.orientation = -1.0
+			player_controller.orientation = -1.0
 			animated_sprite.flip_h = true
 
 
-		var target_speed := direction * movement_controller.speed
+		var target_speed := direction * player_controller.speed
 
 		player.velocity.x = move_toward(
 			player.velocity.x,
 			target_speed,
-			movement_controller.acceleration * delta
+			player_controller.acceleration * delta
 		)
 
 	else:
@@ -38,7 +38,7 @@ func update(delta: float) -> void:
 		player.velocity.x = move_toward(
 			player.velocity.x,
 			0.0,
-			movement_controller.deceleration * delta
+			player_controller.deceleration * delta
 		)
 
 
@@ -52,7 +52,7 @@ func update(delta: float) -> void:
 		# Coyote Jump
 		# ----------------------------------------------------
 
-		if movement_controller.coyote_timer > 0.0:
+		if player_controller.coyote_timer > 0.0:
 			state_machine.change_to_jump(
 				JumpState.JumpType.NORMAL
 			)
@@ -63,13 +63,13 @@ func update(delta: float) -> void:
 		# Wall Jump
 		# ----------------------------------------------------
 
-		if player.is_on_wall() and movement_controller.can_wall_jump:
+		if player.is_on_wall() and player_controller.can_wall_jump:
 
 			var wall_normal := player.get_wall_normal()
 
 			# Push away from wall.
 			player.velocity.x = (
-				wall_normal.x * movement_controller.speed
+				wall_normal.x * player_controller.speed
 			)
 
 			state_machine.change_to_jump(
@@ -82,7 +82,7 @@ func update(delta: float) -> void:
 		# Double Jump
 		# ----------------------------------------------------
 
-		if movement_controller.can_double_jump:
+		if player_controller.can_double_jump:
 
 			state_machine.change_to_jump(
 				JumpState.JumpType.DOUBLE
@@ -94,8 +94,8 @@ func update(delta: float) -> void:
 		# No Jump Available → Buffer
 		# ----------------------------------------------------
 
-		movement_controller.jump_buffer_timer = (
-			movement_controller.jump_buffer_time
+		player_controller.jump_buffer_timer = (
+			player_controller.jump_buffer_time
 		)
 
 
@@ -103,7 +103,7 @@ func update(delta: float) -> void:
 	# Jump Buffer
 	# ========================================================
 
-	if movement_controller.jump_buffer_timer > 0.0:
+	if player_controller.jump_buffer_timer > 0.0:
 
 		if player.is_on_floor():
 			state_machine.change_to_jump(
@@ -118,7 +118,7 @@ func update(delta: float) -> void:
 
 	if Input.is_action_just_pressed("Dash"):
 
-		if movement_controller.can_dash and movement_controller.dash_cooldown_timer <= 0:
+		if player_controller.can_dash and player_controller.dash_cooldown_timer <= 0:
 			state_machine.change_state("DashState")
 			return
 
@@ -129,7 +129,7 @@ func update(delta: float) -> void:
 
 	if player.is_on_floor():
 
-		if movement_controller.jump_buffer_timer > 0.0:
+		if player_controller.jump_buffer_timer > 0.0:
 
 			state_machine.change_to_jump(
 				JumpState.JumpType.NORMAL

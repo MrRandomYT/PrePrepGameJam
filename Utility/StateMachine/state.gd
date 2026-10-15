@@ -8,18 +8,18 @@ var state_id: StringName:
 var state_machine: StateMachine
 var player: CharacterBody2D
 var animated_sprite: AnimatedSprite2D
-var movement_controller: MovementController
+var player_controller: PlayerController
 
 func setup(
 	_state_machine: StateMachine,
 	_player: CharacterBody2D,
 	_animated_sprite: AnimatedSprite2D,
-	_movement_controller: MovementController
+	_player_controller: PlayerController
 ) -> void:
 	self.state_machine = _state_machine
 	self.player = _player
 	self.animated_sprite = _animated_sprite
-	self.movement_controller = _movement_controller
+	self.player_controller = _player_controller
 
 func enter() -> void:
 	pass

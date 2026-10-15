@@ -1,9 +1,20 @@
 extends Camera2D
 class_name FollowCamera
 
-@export var follow_target: Node2D
 @export var minimum: Vector2
 @export var maximum: Vector2
+
+
+var follow_target: Node2D
+
+func _ready() -> void:
+	# Find the Player if no follow target has been assigned.
+	if follow_target == null:
+		follow_target = get_tree().get_first_node_in_group("player") as Node2D
+
+	if follow_target == null:
+		push_warning("FollowCamera: Could not find Player.")
+
 
 func _process(_delta: float) -> void:
 	if not is_instance_valid(follow_target):

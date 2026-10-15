@@ -1,17 +1,29 @@
-extends Node
-class_name MovementController
+extends Node2D
+class_name PlayerController
 
 
 @export var player: CharacterBody2D
-@export var ground_tile_map: TileMapLayer
+@export var hazard_system: HazardSystem
 
+var ground_tile_map: TileMapLayer
 
 func _ready() -> void:
 	if !player:
-		push_error("Missing Player Reference!")
-		push_warning("Disabling Movement Controller.")
+		push_error("PlayerController: Missing Player Reference!")
+		push_warning("PlayerController: Disabling Movement Controller.")
 		set_process(false)
 		set_physics_process(false)
+
+	# Find the ground TileMapLayer if it hasn't been assigned.
+	if !ground_tile_map:
+		var tile_node: Node = get_tree().get_first_node_in_group("level_tiles")
+		ground_tile_map = tile_node as TileMapLayer
+
+	if !ground_tile_map:
+		push_error("PlayerController: Missing Ground Tile Map!")
+
+	if !hazard_system:
+		push_error("PlayerController: Missing Hazard System!")
 
 
 # ============================================================
@@ -141,6 +153,7 @@ func can_drop_through_current_ground() -> bool:
 # Config Data
 # ============================================================
 
+@export_category("Movement Controller")
 @export_subgroup("Movement")
 
 @export_range(0, 1000, 0.01, "hide_slider")

@@ -40,7 +40,7 @@ func update(_delta: float) -> void:
 	# also be dropped through.
 	if player.is_on_floor():
 		if Input.is_action_pressed("Jump"):
-			if movement_controller.can_drop_through_current_ground():
+			if player_controller.can_drop_through_current_ground():
 				player.set_collision_mask_value(
 					PLATFORM_COLLISION_LAYER,
 					false

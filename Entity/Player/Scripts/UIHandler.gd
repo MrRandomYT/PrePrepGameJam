@@ -1,12 +1,11 @@
-
 extends Control
 class_name UIHandler
 
 @export_subgroup("Health & Toxins")
-@export var hazard_system: HazardSystem
 @export var hearts_container: HBoxContainer
 @export var heart_scene: PackedScene
 
+var player_controller: PlayerController
 var hearts: Array[Heart] = []
 
 @export_subgroup("Android & Touch")
@@ -24,13 +23,22 @@ func _ready() -> void:
 		else:
 			var touch = touch_controlls.instantiate()
 			add_child(touch)
-	
+
 	# ============================================================
 	# Health & Toxins
 	# ============================================================
 
-	if hazard_system == null:
-		push_warning("UIHandler: Assign HazardSystem.")
+	# Find the PlayerController if it hasn't been assigned.
+	if player_controller == null:
+		var player_node: Node = get_tree().get_first_node_in_group("player")
+		player_controller = player_node as PlayerController
+
+	if player_controller == null:
+		push_warning("UIHandler: Could not find PlayerController.")
+		return
+
+	if player_controller.hazard_system == null:
+		push_warning("UIHandler: PlayerController has no HazardSystem.")
 		return
 
 	if hearts_container == null:
@@ -41,14 +49,14 @@ func _ready() -> void:
 		push_warning("UIHandler: Assign Heart Scene.")
 		return
 
-	hazard_system.health_changed.connect(_on_health_changed)
-	hazard_system.toxin_level_changed.connect(_on_toxin_level_changed)
+	player_controller.hazard_system.health_changed.connect(_on_health_changed)
+	player_controller.hazard_system.toxin_level_changed.connect(_on_toxin_level_changed)
 
 	create_hearts()
 	call_deferred(
 		"update_hearts",
-		hazard_system.current_health,
-		hazard_system.max_health
+		player_controller.hazard_system.current_health,
+		player_controller.hazard_system.max_health
 	)
 
 
@@ -61,7 +69,7 @@ func create_hearts() -> void:
 
 	# One heart represents two health points.
 	var heart_count: int = ceili(
-		float(hazard_system.max_health) / 2.0
+		float(player_controller.hazard_system.max_health) / 2.0
 	)
 
 	for i in range(heart_count):
@@ -75,9 +83,8 @@ func create_hearts() -> void:
 		hearts.append(heart)
 
 
-
 func update_hearts(current: int, _maximum: int) -> void:
-	var toxins: int = hazard_system.toxin_level()
+	var toxins: int = player_controller.hazard_system.toxin_level()
 
 	for i in range(hearts.size()):
 		# Each heart represents two health points.
@@ -99,11 +106,13 @@ func update_hearts(current: int, _maximum: int) -> void:
 			toxins_for_heart
 		)
 
+
 func _on_health_changed(current: int, maximum: int) -> void:
 	update_hearts(current, maximum)
 
+
 func _on_toxin_level_changed(_toxin_level: int) -> void:
 	update_hearts(
-		hazard_system.current_health,
-		hazard_system.max_health
+		player_controller.hazard_system.current_health,
+		player_controller.hazard_system.max_health
 	)
